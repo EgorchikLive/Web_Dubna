@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Личный кабинет | Лига банк</title>
+    <link rel="stylesheet" href="lib/style/reset.css" type="text/css">
+    <link rel="stylesheet" href="lib/style/style.css" type="text/css">
+    <style>
+        .profile_section { padding: 60px 0; min-height: 60vh; }
+        .profile_card { background: var(--base_white); border-radius: 12px; padding: 40px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); max-width: 600px; margin: 0 auto; }
+        .profile_title { font-size: 32px; margin-bottom: 20px; color: var(--base_black); }
+        .profile_info p { font-size: 18px; margin-bottom: 10px; color: #333; }
+        .profile_info span { font-weight: bold; color: var(--blue); }
+        .logout_btn { margin-top: 30px; background: #ff4d4d; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-size: 16px; transition: background 0.3s; }
+        .logout_btn:hover { background: #d32f2f; }
+        .loading_text { text-align: center; font-size: 20px; color: var(--base_black); padding: 50px 0; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header_wrapper">
+            <a href="index.html" class="logo">
+                <span style="font-size: 24px; font-weight: bold; color: var(--blue); font-family: 'Roboto_Bold';">Лига Банк</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">На главную</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container profile_section">
+        <div id="loading-block" class="loading_text">Проверка авторизации...</div>
+        <div class="profile_card" id="profile-block" style="display: none;">
+            <h1 class="profile_title">Личный кабинет</h1>
+            <div class="profile_info">
+                <p>Ваш Email: <span id="user-email">—</span></p>
+                <p>ID пользователя (UID): <span id="user-id">—</span></p>
+                <p>Роль: <span id="user-role">—</span></p>
+                <p>Дата регистрации: <span id="user-created">—</span></p>
+            </div>
+            <button class="logout_btn" id="logout-btn">Выйти из аккаунта</button>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAj7VtPtFuTKwBlaKChF4K5C3z3NFz-hDY",
+            authDomain: "calcbank-9a89c.firebaseapp.com",
+            projectId: "calcbank-9a89c",
+            storageBucket: "calcbank-9a89c.firebasestorage.app",
+            messagingSenderId: "691941990740",
+            appId: "1:691941990740:web:e4f79ba1bd03e1c124e8c1",
+            measurementId: "G-HXE0264WKJ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let hasRedirected = false;
+
+        onAuthStateChanged(auth, async (user) => {
+            const loadingBlock = document.getElementById('loading-block');
+            const profileBlock = document.getElementById('profile-block');
+
+            if (user) {
+                loadingBlock.style.display = 'none';
+                profileBlock.style.display = 'block';
+                document.getElementById('user-email').textContent = user.email;
+                document.getElementById('user-id').textContent = user.uid;
+
+                try {
+                    const userRef = doc(db, "users", user.uid);
+                    const docSnap = await getDoc(userRef);
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        document.getElementById('user-role').textContent = data.role || 'user';
+                        if (data.createdAt && data.createdAt.toDate) {
+                            document.getElementById('user-created').textContent = data.createdAt.toDate().toLocaleString('ru-RU');
+                        }
+                    }
+                } catch (err) {
+                    console.error("Firestore read error:", err);
+                }
+            } else {
+                setTimeout(() => {
+                    if (!user && !hasRedirected) {
+                        hasRedirected = true;
+                        window.location.href = 'index.html';
+                    }
+                }, 1000);
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            await signOut(auth);
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

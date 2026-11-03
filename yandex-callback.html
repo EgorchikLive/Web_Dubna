@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Авторизация...</title></head>
+<body>
+    <p style="text-align:center; margin-top:50px; font-family: sans-serif;">Идёт вход через Яндекс ID, подождите...</p>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+
+        if (!code) {
+            window.location.href = 'index.html';
+        } else {
+            // ⚠️ Замените URL на адрес вашего сервера, который обменивает code на токен
+            fetch('http://127.0.0.1:3000/yandex-auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.token) {
+                    window.location.href = 'index.html?customToken=' + encodeURIComponent(data.token);
+                } else {
+                    alert('Ошибка: ' + (data.error || 'Неизвестная ошибка'));
+                    window.location.href = 'index.html';
+                }
+            })
+            .catch(err => {
+                alert('Ошибка сети: ' + err.message);
+                window.location.href = 'index.html';
+            });
+        }
+    </script>
+</body>
+</html>

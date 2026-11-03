@@ -1,26 +1,27 @@
-/*BEGIN CSS*/
-
-@import "components.css";
-
+/* ========================================================= */
+/* БАЗОВЫЕ СТИЛИ И ПЕРЕМЕННЫЕ                                 */
+/* ========================================================= */
 
 :root{
     --blue: #2c36f2;
     --base_white: #f6f7ff;
     --base_black: #1f1e25;
+    --gray: #707c87;
+    --border_color: #c1c2ca;
 }
 
 @font-face{
     font-family: 'Roboto';
-        src:url("fonts/Roboto/Roboto-Regular.woff2");
+    src:url("fonts/Roboto/Roboto-Regular.woff2");
 }
 
 @font-face{
     font-family: 'Roboto_Bold';
-        src:url("fonts/Roboto/Roboto-Bold.woff2");
+    src:url("fonts/Roboto/Roboto-Bold.woff2");
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Roboto_Bold';
+    font-family: 'Roboto_Bold', sans-serif;
 }
 
 * {
@@ -40,34 +41,41 @@ ol, ul {
 
 a {
     text-decoration: none;
-    color: black;
+    color: inherit;
+    transition: color 0.3s ease;
 }
 
 a:hover{
-    color: var(--blue)
+    color: var(--blue);
 }
 
 body{
-    font-family: 'Roboto';
+    font-family: 'Roboto', sans-serif;
+    color: var(--base_black);
 }
 
 .container{
-    width: 1290px;
+    width: 100%;
+    max-width: 1290px;
     min-width: 320px;
     padding: 0 60px;
     margin: 0 auto;
 }
 
-/*HEADER CSS*/
+/* ========================================================= */
+/* HEADER                                                    */
+/* ========================================================= */
 
 .header {
     background: var(--base_white);
     padding: 25px 0 35px 0;
+    position: relative;
 }
 
 .header_wrapper {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .header nav ul{
@@ -83,21 +91,28 @@ body{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    align-self: flex-end;
+    cursor: pointer;
 }
 
 .enter_block span{
     margin: 0 0 0 15px;
+    font-weight: 500;
+}
+
+/* Бургер по умолчанию скрыт на десктопе */
+.burger_wrapper {
+    display: none;
 }
 
 
-/*END HEADER CSS*/
-
-/*TABS*/
+/* ========================================================= */
+/* TABS                                                      */
+/* ========================================================= */
 
 .tabs-container{
     margin: 50px auto;
 }
+
 .tabs{
     display: flex;
     flex-wrap: wrap;
@@ -130,6 +145,7 @@ body{
     display: none;
     background-color: var(--base_white);
     padding: 55px 130px 55px 70px;
+    width: 100%;
 }
 
 .tab_content h3{
@@ -167,7 +183,7 @@ body{
 .tab_content .tab_content_left ul li::after{
     position: absolute;
     content: "";
-    background: url(..//style/img/svg/tick.svg);
+    background: url("img/svg/tick.svg") no-repeat center;
     width: 13px;
     height: 10px;
     left: 0;
@@ -185,10 +201,10 @@ body{
     display: flex;
 }
 
+/* ========================================================= */
+/* CALC BLOCK                                                */
+/* ========================================================= */
 
-/*END TABS*/
-
-/*CALC BLOCK CSS*/
 .calc_wrapper{
     display: flex;
     justify-content: space-between;
@@ -256,16 +272,18 @@ body{
     cursor: pointer;
     background: var(--blue);
 }
+
 .calc_block_left .field_first_pay_wrapper::before,
 .calc_block_left .field_period_wrapper::before{
     content: "";
     width: 100%;
     height: 1px;
-    background-color: #c1c2ca;
+    background-color: var(--border_color);
     position: absolute;
     bottom: 10px;
     z-index: -1;
 }
+
 .calc_block_left .field_first_pay_wrapper input,
 .calc_block_left .field_period_wrapper input{
     -webkit-appearance: none;
@@ -291,7 +309,7 @@ body{
 }
 
 .list_hidden{
-    display: none;
+    display: none !important;
 }
 
 .calc_block_left ul{
@@ -301,20 +319,32 @@ body{
     top: 95px;
     width: 100%;
     z-index: 10;
-    border: 1px solid black;
+    border: 1px solid var(--base_black);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 .calc_block_left ul li{
-    border-bottom: 1px solid #1f1e25;
-    padding: 20px;
+    border-bottom: 1px solid var(--border_color);
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: background 0.3s;
 }
-/*END_CALC BLOCK CSS*/
 
-/*RESULT BLOCK*/
+.calc_block_left ul li:hover {
+    background: var(--base_white);
+    color: var(--blue);
+}
+
+/* ========================================================= */
+/* RESULT BLOCK                                              */
+/* ========================================================= */
+
 .result_form{
     background: var(--base_white);
-    border-radius: 4px;
-    padding: 55px;
+    border-radius: 8px;
+    padding: 40px;
 }
 
 .result_form h3{
@@ -333,21 +363,23 @@ body{
 .result_form .result_precent,
 .result_form .result_month_pay,
 .result_form .required_income{
-    width: 50%;
+    width: 48%;
     display: flex;
     flex-direction: column;
     margin: 25px 0 0 0;
 }
 
 .result_form span{
-    font-size: 16px;
-    color: #707c87;
+    font-size: 14px;
+    color: var(--gray);
+    margin-top: 5px;
 }
 
 .result_form input[type="text"]{
     border: 0;
     background: transparent;
     font-size: 22px;
+    font-family: 'Roboto_Bold', sans-serif;
     color: var(--base_black);
     padding: 0;
 }
@@ -359,7 +391,7 @@ body{
     border-radius: 4px;
     height: 60px;
     width: 100%;
-    margin: 20px 0 0 0;
+    margin: 30px 0 0 0;
     transition: all .5s ease;
     cursor: pointer;
 }
@@ -368,10 +400,10 @@ body{
     box-shadow: 0px 0px 10px var(--blue);
 }
 
-/*END RESULT BLOCK*/
+/* ========================================================= */
+/* MAP                                                       */
+/* ========================================================= */
 
-
-/*MAP CSS*/
 .map{
     padding: 30px 0 120px 0;
 }
@@ -386,7 +418,7 @@ body{
     margin: 50px 0 0 0;
     background: var(--base_white);
     padding: 30px 0;
-    border-bottom: 1px solid #c1c2ca;
+    border-bottom: 1px solid var(--border_color);
 }
 
 .control_wrapper {
@@ -404,28 +436,43 @@ body{
 }
 
 .point_control label{
-    padding: 0 0 0 20px;
+    padding: 0 0 0 25px;
     cursor: pointer;
 }
 
 .point_control input+label::before{
     content: "";
     position: absolute;
-    background-image: url("../style/img/svg/checkbox.svg");
+    background-image: url("img/svg/checkbox.svg");
     background-repeat: no-repeat;
     background-position: center;
     width: 16px;
     height: 16px;
     left: 0;
-    bottom: 2px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .point_control input:checked+label::before{
-    background-image: url(../style/img/svg/checkbox-checked.svg);
+    background-image: url("img/svg/checkbox-checked.svg");
 }
-/*END MAP CSS*/
 
-/*BEGIN FOOTER CSS*/
+.map_content {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-top: 20px;
+}
+
+#map img {
+    max-width: none !important;
+    height: auto !important;
+}
+
+/* ========================================================= */
+/* FOOTER                                                    */
+/* ========================================================= */
+
 .footer {
     background: var(--base_white);
     padding: 50px 0;
@@ -456,7 +503,7 @@ body{
 
 .footer_right .footer_phone_two::before{
     content: '';
-    background-image: url("../style/img/svg/phone.svg");
+    background-image: url("img/svg/phone.svg");
     width: 16px;
     height: 16px;
     position: absolute;
@@ -467,7 +514,7 @@ body{
 
 .footer_right .footer_phone_one::before{
     content: '';
-    background-image: url("../style/img/svg/mobile.svg");
+    background-image: url("img/svg/mobile.svg");
     width: 16px;
     height: 16px;
     position: absolute;
@@ -490,13 +537,15 @@ body{
 }
 
 .desc_text{
-    color: #707c87;
+    color: var(--gray);
     font-size: 12px;
     padding: 10px 0 0 0;
 }
-/*END FOOTER CSS*/
 
-/*POPUP CSS*/
+/* ========================================================= */
+/* POPUP BLOCK (АВТОРИЗАЦИЯ)                                 */
+/* ========================================================= */
+
 .popup_overlay{
     position: fixed;
     top: 0;
@@ -504,265 +553,559 @@ body{
     right: 0;
     bottom: 0;
     width: 100vw;
-    /*max-width: 100vh;*/
     display: flex;
     justify-content: center;
+    align-items: center;
     overflow-x: hidden;
     overflow-y: auto;
-    background: transparent;
+    background: rgba(31, 30, 37, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 1000;
 }
 
 .popup_hidden{
-    display: none;
+    display: none !important;
 }
 
-.popup_wrapper, .thx_wrapper{
+.popup_wrapper {
     position: relative;
-    width: 545px;
-    min-width: 300px;
-    margin-top: auto;
-    margin-bottom: auto;
-    background: var(--base_white);
-    border: 4px solid var(--blue);
-    padding: 55px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    padding: 40px;
+    width: 460px;
+    max-width: 90vw;
+    border: none;
+    margin: auto;
 }
 
-.thx_wrapper h3{
-    font-size: 28px;
+.popup_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
 }
 
-.popup_wrapper form{
+.popup_logo {
+    height: 30px;
+}
+
+.popup_close {
+    background: transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%231f1e25" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>') no-repeat center;
+    width: 24px;
+    height: 24px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.popup_close:hover {
+    transform: rotate(90deg);
+}
+
+.auth_tabs {
+    display: flex;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border_color);
+}
+
+.auth_tab {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 10px;
+    font-size: 18px;
+    font-family: 'Roboto_Bold', sans-serif;
+    color: var(--gray);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px;
+}
+
+.auth_tab.active {
+    color: var(--blue);
+    border-bottom-color: var(--blue);
+}
+
+.form_group {
+    margin-bottom: 20px;
     display: flex;
     flex-direction: column;
-    margin: 40px 0 0 0;
+    gap: 8px;
 }
 
-.popup_wrapper label{
-    font-size: 16px;
+.form_group label {
+    font-size: 14px;
     color: var(--base_black);
+    font-weight: 500;
 }
 
-.popup_wrapper input{
-    margin: 2px 0 0 0;
-    background: var(--base_white);
-    border-radius: 4px;
-    height: 60px;
-    font-size: 16px;
-    color: var(--base_black);
-    border: 1px solid var(--base_black);
-}
-
-.popup_wrapper .password-input,
-.popup_wrapper .login-input{
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-}
-
-.popup_wrapper .password-input{
-    margin: 25px 0 0 0;
-    position: relative;
-}
-
-.popup_wrapper .forgotten_link{
-    font-size: 12px;
-    align-self: flex-end;
-    color: #707c87;
-    margin: 10px 0 0 0;
-}
-
-.submit_btn{
+.form_group input {
     width: 100%;
-    height: 60px;
-    border-radius: 4px;
+    height: 50px;
+    padding: 0 15px;
+    border: 1px solid var(--border_color);
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.form_group input:focus {
+    border-color: var(--blue);
+}
+
+.password_wrapper {
+    position: relative;
+}
+
+.password_wrapper input {
+    padding-right: 45px;
+}
+
+.show_password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: var(--gray);
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.show_password:hover {
+    color: var(--blue);
+}
+
+.auth_error {
+    background: #ffeaea;
+    color: #d32f2f;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#submit-auth {
+    margin-top: 10px;
+    width: 100%;
+    height: 50px;
     background: var(--blue);
-    margin: 25px 0 0 0;
     color: white;
+    border: none;
+    border-radius: 6px;
     font-size: 18px;
     cursor: pointer;
-    transition: all .5s ease;
+    transition: background 0.3s;
 }
 
-.submit_btn:hover{
-    box-shadow: 0px 0px 10px var(--blue);
+#submit-auth:hover {
+    background: #1f2ab8;
 }
 
-.popup_wrapper .show_password{
+#submit-auth:disabled {
+    background: var(--gray);
+    cursor: not-allowed;
+}
+
+.thx_wrapper {
+    position: relative;
+    background: #fff;
+    border-radius: 12px;
+    padding: 50px;
+    text-align: center;
+}
+
+.thx_wrapper h3 {
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.thx_wrapper .popup_close {
     position: absolute;
-    background: url(img/svg/show-password.svg);
-    width: 22px;
-    height: 12px;
-    cursor: pointer;
+    top: 20px;
     right: 20px;
-    top: 47px;
 }
-.thx_wrapper .popup_thx,
-.popup_wrapper .popup_close{
-    position: absolute;
-    width: 18px;
-    height: 18px;
+
+/* --- Кнопки входа через соцсети --- */
+.social_login {
+    margin-top: 25px;
+}
+
+.social_divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: var(--gray);
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.social_divider::before,
+.social_divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--border_color);
+}
+
+.social_divider span {
+    padding: 0 10px;
+}
+
+.social_buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.social_btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 48px;
+    border-radius: 6px;
+    border: 1px solid var(--border_color);
+    background: #fff;
+    font-size: 15px;
+    font-family: 'Roboto', sans-serif;
+    color: var(--base_black);
     cursor: pointer;
-    background: url(img/svg/close.svg);
-    right: 55px;
-    top: 60px;
+    transition: all 0.3s ease;
 }
 
-/*END POPUP CSS*/
+.social_btn:hover {
+    background: var(--base_white);
+    border-color: var(--blue);
+}
 
-/*END CSS*/
+.social_btn svg {
+    flex-shrink: 0;
+}
 
-/*RESPONSIVE CSS*/
-@media screen and (max-width: 1023px){
-    .container{
-        width: 100%;
-        padding: 0 15px;
+/* ========================================================= */
+/* RESPONSIVE (АДАПТИВ)                                      */
+/* ========================================================= */
+
+/* --- Планшеты (от 768px до 1024px) --- */
+@media screen and (max-width: 1023px) {
+    .container {
+        padding: 0 20px;
     }
 
-    .burger::after,
-    .burger::before{
-        content: "";
-        width: 30px;
-        height: 4px;
-        background-color: #1f1e25;
-        position: absolute;
-        border-radius: 2px;
+    /* Шапка */
+    .header {
+        padding: 15px 0;
     }
 
-    .burger::after{
-        top: 10px;
-    }
-
-    .burger::before{
-        bottom: 10px;
-    }
-
-    .burger{
-        position: relative;
-        display: block;
-        width: 30px;
-        height: 4px;
-        margin: 20px 0 0 0;
-        border-radius: 2px;
-        background-color: #1f1e25;
-    }
-
-    .enter_block{
+    .header_wrapper {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        align-self: flex-end;
     }
 
-    .enter_block span{
-        display: none;
-    }
-
-    .header_wrapper{
-        display: flex;
-    }
-
-    .logo {
-        justify-content: left;
-    }
-
-    .burger_wrapper{
-        justify-content: right;
-    }
-
-    .logo,
-    .burger_wrapper{
-        display:flex;
-        width: 50%;
-    }
-
-    .calc_block_left, .calc_block_right{
-        width: 100%;
-    }
-
-    .map_content img{
-        max-width: 100%;
-    }
-
-    .map h2, .calc h2{
-        font-size: 24px;
-    }
-
-    .footer_wrapper, .footer_left, .footer_right{
-        display: block;
-    }
-
-    .footer_logo, .footer_right_ 
-    .footer_right,  .footer_nav{
-        width: 100%;
-        margin: 0 0 20px 0;
-    }
-
-    .footer_right .footer_phone_two,
-    .footer_right .footer_phone_one{
-        width: 100%;
-        margin: 0 0 20px 30px;
-        padding: 0 15px;
-    }
-
-    .footer_social ul{
-        justify-content: center;
-    }
-
-    .tab_btn span{
-        display: none;
-    }
-
-    .tab_content{
-        padding: 10px;
-    }
-
-    #tab1:checked~#tab_content_1,
-    #tab2:checked~#tab_content_2,
-    #tab3:checked~#tab_content_3,
-    #tab4:checked~#tab_content_4{
-        width: 100%;
-        display: block;
-    }
-
-    .tab_content_right img{
-        margin: 20px 0 0 0;
-        max-width: 100%;
-    }
-
-    .header nav ul{
-        display: none;
-    }
-
-    .header nav ul.show_menu{
-        display: block;
-    }
-
-    .header nav{
+    /* Скрываем десктопное меню, делаем его выпадающим */
+    .header nav {
         position: absolute;
         width: 100%;
         background: var(--base_white);
         left: 0;
-        padding: 0 15px;
-        top: 70px;
+        top: 60px; /* Высота шапки */
+        z-index: 100;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        padding: 0;
+        display: none;
     }
 
-    .header nav ul li{
+    .header nav ul {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .header nav.show_menu {
+        display: block; /* Показываем меню при клике */
+    }
+
+    .header nav ul li {
+        margin: 0;
         padding: 15px;
-        border-bottom: 1px solid var(--base_black);
+        border-bottom: 1px solid var(--border_color);
+        text-align: center;
     }
 
-    .calc_wrapper{
+    /* Показываем бургер */
+    .burger_wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: auto; /* Прижимаем вправо */
+        margin-right: 20px; /* Отступ от иконки входа */
+        cursor: pointer;
+    }
+
+    .burger {
+        position: relative;
         display: block;
-        justify-content: space-between;
-        margin: 50px 0 0 0;
+        width: 30px;
+        height: 4px;
+        border-radius: 2px;
+        background-color: var(--base_black);
     }
 
-}
+    .burger::after,
+    .burger::before {
+        content: "";
+        width: 30px;
+        height: 4px;
+        background-color: var(--base_black);
+        position: absolute;
+        border-radius: 2px;
+        left: 0;
+    }
 
-@media screen and (max-width: 767px){
+    .burger::after { top: 10px; }
+    .burger::before { bottom: 10px; }
+
+    /* Иконка входа */
+    .enter_block span {
+        display: none; /* Скрываем текст, оставляем только иконку */
+    }
+
+    /* Вкладки */
     .tab_btn span {
         display: none;
     }
+
+    .tab_content {
+        padding: 30px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tab_content .tab_content_left {
+        margin-right: 0;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .tab_content .tab_content_left ul {
+        text-align: left;
+        display: inline-block;
+    }
+
+    .tab_content .btn_blue {
+        margin: 0 auto;
+    }
+
+    .tab_content_right img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
+
+    /* Калькулятор */
+    .calc_wrapper {
+        flex-direction: column;
+        margin: 30px 0 0 0;
+    }
+
+    .calc_block_left, .calc_block_right {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+
+    /* Карта и заголовки */
+    .map h2, .calc h2 {
+        font-size: 28px;
+        text-align: center;
+    }
+    
+    .map_header {
+        padding: 15px 0;
+    }
+    
+    .control_wrapper {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    /* Футер */
+    .footer_wrapper, .footer_left, .footer_right {
+        flex-direction: column;
+    }
+
+    .footer_logo, .footer_nav, .footer_right > div {
+        width: 100%;
+        margin-bottom: 25px;
+    }
+
+    .footer_right .footer_phone_one,
+    .footer_right .footer_phone_two {
+        padding-left: 30px;
+    }
+
+    .footer_social ul {
+        justify-content: flex-start;
+    }
 }
 
-/*END_RESPONSIVE CSS*/ 
+/* --- Мобильные устройства (до 767px) --- */
+@media screen and (max-width: 767px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    .logo svg {
+        width: 120px;
+        height: auto;
+    }
+
+    .tabs-container {
+        margin: 30px auto;
+    }
+
+    .tab_btn {
+        padding: 15px 0;
+        width: 50%;
+        border-bottom: 1px solid var(--border_color);
+    }
+
+    .tab_content {
+        padding: 20px 15px;
+    }
+
+    .tab_content h3 {
+        font-size: 20px;
+    }
+
+    .tab_content .tab_content_left ul li {
+        font-size: 14px;
+    }
+
+    .calc_block_left h3 {
+        font-size: 18px;
+    }
+
+    .calc input[type="text"] {
+        padding: 15px 40px 15px 15px;
+        font-size: 14px;
+    }
+
+    .calc_block_left .input_plus,
+    .calc_block_left .input_minus {
+        top: 48px;
+    }
+    
+    .calc_block_left .select_arrow {
+        top: 48px;
+    }
+
+    .result_form {
+        padding: 20px;
+    }
+
+    .result_form .result_all_money,
+    .result_form .result_precent,
+    .result_form .result_month_pay,
+    .result_form .required_income {
+        width: 100%;
+        margin: 15px 0 0 0;
+    }
+
+    .result_form input[type="text"] {
+        font-size: 20px;
+    }
+
+    .map {
+        padding: 20px 0 60px 0;
+    }
+
+    .map_content {
+        height: 300px !important;
+    }
+
+    .point_control {
+        margin: 0 10px 10px 0;
+        font-size: 14px;
+    }
+
+    .footer {
+        padding: 30px 0;
+    }
+
+    .footer_right .footer_phone_one,
+    .footer_right .footer_phone_two {
+        margin-left: 30px;
+        padding-left: 0;
+    }
+    
+    .footer_right .footer_phone_one::before,
+    .footer_right .footer_phone_two::before {
+        left: -20px;
+    }
+
+    .popup_wrapper {
+        padding: 20px;
+        width: 95vw;
+    }
+
+    .popup_header {
+        margin-bottom: 15px;
+    }
+
+    .auth_tab {
+        font-size: 16px;
+        padding: 8px;
+    }
+
+    .form_group input {
+        height: 45px;
+        font-size: 14px;
+    }
+
+    #submit-auth {
+        height: 45px;
+        font-size: 16px;
+    }
+
+    .social_buttons {
+        flex-direction: column;
+    }
+
+    .social_btn {
+        width: 100%;
+    }
+
+    .thx_wrapper {
+        padding: 30px 20px;
+        width: 95vw;
+    }
+    
+    .thx_wrapper h3 {
+        font-size: 22px;
+    }
+
+    .profile_section {
+        padding: 30px 0;
+    }
+    
+    .profile_card {
+        padding: 20px;
+    }
+    
+    .profile_title {
+        font-size: 24px;
+        text-align: center;
+    }
+    
+    .profile_info p {
+        font-size: 16px;
+        word-break: break-all;
+    }
+}
