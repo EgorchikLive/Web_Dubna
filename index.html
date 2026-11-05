@@ -2,13 +2,15 @@
 <html>
 <head>
     <meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Лига банк</title>
     <link rel="stylesheet" href="lib/style/reset.css" type="text/css">
     <link rel="stylesheet" href="lib/style/style.css" type="text/css">
     <link rel="icon" href="lib/style/img/icon.svg" type="image/svg">
     
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
 </head>
 <body>
     <header class="header">
@@ -44,6 +46,7 @@
             </a>
         </div>
     </header>
+    
     <main>
         <!-- TABS -->
         <section class="tabs-container container">
@@ -232,7 +235,7 @@
         </section>
         <!-- END_MAP -->
     </main>
-    <!--FOOTER-->
+    
     <footer class="footer">
         <div class="container">
             <div class="footer_wrapper">
@@ -279,9 +282,8 @@
             </div>
         </div>
     </footer>
-    <!--END_FOOTER-->
 
-    <!--POPUP BLOCK-->
+    <!--POPUP BLOCK (АВТОРИЗАЦИЯ)-->
     <div class="popup_overlay popup_hidden">
         <div class="popup_wrapper">
             <div class="popup_header">
@@ -345,6 +347,30 @@
     </div>
     <!--END POPUP BLOCK-->
 
+    <!-- POPUP ДЛЯ ПОДПИСИ -->
+    <div class="popup_overlay signature_popup popup_hidden" id="signature-popup">
+        <div class="popup_wrapper signature_wrapper">
+            <div class="popup_header">
+                <h3>Подтверждение заявки</h3>
+                <button class="popup_close signature_close" type="button"></button>
+            </div>
+            
+            <div class="signature_info">
+                <p>Сумма кредита: <strong id="sig-amount">0</strong> ₽</p>
+                <p>Срок: <strong id="sig-period">0</strong> лет</p>
+                <p>Ежемесячный платеж: <strong id="sig-monthly">0</strong> ₽</p>
+            </div>
+
+            <div class="signature_area">
+                <canvas id="signature-canvas"></canvas>
+                <button type="button" id="clear-signature" class="clear_sign_btn">Очистить</button>
+            </div>
+
+            <button class="submit_btn" id="submit-signature">Подтвердить</button>
+        </div>
+    </div>
+    <!-- END POPUP ДЛЯ ПОДПИСИ -->
+
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -353,5 +379,6 @@
     <script src="lib/style/core/app.js"></script>
     <script src="lib/style/core/calc.js"></script>
     <script src="lib/style/core/map.js"></script>
+    <script src="lib/style/core/signature.js"></script> <!-- Подключаем скрипт подписи -->
 </body>
 </html>

@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Личный кабинет | Лига банк</title>
     <link rel="stylesheet" href="lib/style/reset.css" type="text/css">
     <link rel="stylesheet" href="lib/style/style.css" type="text/css">
@@ -14,6 +15,14 @@
         .logout_btn { margin-top: 30px; background: #ff4d4d; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-size: 16px; transition: background 0.3s; }
         .logout_btn:hover { background: #d32f2f; }
         .loading_text { text-align: center; font-size: 20px; color: var(--base_black); padding: 50px 0; }
+
+        /* Стили для списка заявок */
+        .applications_list { margin-top: 30px; border-top: 1px solid var(--border_color); padding-top: 20px; }
+        .applications_list h2 { font-size: 24px; margin-bottom: 20px; }
+        .app_card { border: 1px solid var(--border_color); border-radius: 8px; padding: 15px; margin-bottom: 15px; background: #fff; }
+        .app_card h3 { font-size: 18px; color: var(--blue); margin-bottom: 10px; }
+        .app_card p { font-size: 14px; color: #333; margin-bottom: 5px; }
+        .app_status { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; color: #fff; background: #ffc107; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -32,14 +41,23 @@
 
     <main class="container profile_section">
         <div id="loading-block" class="loading_text">Проверка авторизации...</div>
+        
         <div class="profile_card" id="profile-block" style="display: none;">
             <h1 class="profile_title">Личный кабинет</h1>
             <div class="profile_info">
                 <p>Ваш Email: <span id="user-email">—</span></p>
                 <p>ID пользователя (UID): <span id="user-id">—</span></p>
-                <p>Роль: <span id="user-role">—</span></p>
                 <p>Дата регистрации: <span id="user-created">—</span></p>
             </div>
+            
+            <!-- Блок для заявок -->
+            <div class="applications_list">
+                <h2>Мои заявки</h2>
+                <div id="applications-container">
+                    <p style="color: #707c87;">Загрузка заявок...</p>
+                </div>
+            </div>
+
             <button class="logout_btn" id="logout-btn">Выйти из аккаунта</button>
         </div>
     </main>
@@ -47,7 +65,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        // Импортируем функции для получения коллекции и запросов
+        import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAj7VtPtFuTKwBlaKChF4K5C3z3NFz-hDY",
@@ -75,19 +94,20 @@
                 document.getElementById('user-email').textContent = user.email;
                 document.getElementById('user-id').textContent = user.uid;
 
+                // 1. Загружаем данные о пользователе
                 try {
                     const userRef = doc(db, "users", user.uid);
                     const docSnap = await getDoc(userRef);
-                    if (docSnap.exists()) {
-                        const data = docSnap.data();
-                        document.getElementById('user-role').textContent = data.role || 'user';
-                        if (data.createdAt && data.createdAt.toDate) {
-                            document.getElementById('user-created').textContent = data.createdAt.toDate().toLocaleString('ru-RU');
-                        }
+                    if (docSnap.exists() && docSnap.data().createdAt) {
+                        document.getElementById('user-created').textContent = docSnap.data().createdAt.toDate().toLocaleString('ru-RU');
                     }
                 } catch (err) {
-                    console.error("Firestore read error:", err);
+                    console.error("Ошибка чтения профиля:", err);
                 }
+
+                // 2. Загружаем заявки пользователя
+                await loadApplications(user.uid);
+
             } else {
                 setTimeout(() => {
                     if (!user && !hasRedirected) {
@@ -97,6 +117,46 @@
                 }, 1000);
             }
         });
+
+        // Функция загрузки заявок
+        async function loadApplications(userId) {
+            const container = document.getElementById('applications-container');
+            
+            try {
+                // Создаём запрос: коллекция 'applications', где userId == текущий пользователь
+                const q = query(collection(db, "applications"), where("userId", "==", userId));
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    container.innerHTML = '<p style="color: #707c87;">У вас пока нет оформленных заявок.</p>';
+                    return;
+                }
+
+                container.innerHTML = ''; // Очищаем "Загрузка..."
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const date = data.createdAt ? data.createdAt.toDate().toLocaleString('ru-RU') : 'Дата неизвестна';
+                    
+                    // Форматируем карточку заявки
+                    const appCard = document.createElement('div');
+                    appCard.className = 'app_card';
+                    appCard.innerHTML = `
+                        <h3>Заявка на кредит</h3>
+                        <p>Сумма: <strong>${data.amount} ₽</strong></p>
+                        <p>Срок: <strong>${data.period} лет</strong></p>
+                        <p>Ежемесячный платеж: <strong>${data.monthlyPayment} ₽</strong></p>
+                        <p>Дата создания: ${date}</p>
+                        <span class="app_status">На рассмотрении</span>
+                    `;
+                    container.appendChild(appCard);
+                });
+
+            } catch (error) {
+                console.error("Ошибка загрузки заявок:", error);
+                container.innerHTML = '<p style="color: #d32f2f;">Не удалось загрузить заявки. Проверьте права доступа.</p>';
+            }
+        }
 
         document.getElementById('logout-btn').addEventListener('click', async () => {
             await signOut(auth);
