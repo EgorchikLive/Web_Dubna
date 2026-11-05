@@ -13,6 +13,14 @@
 
 </head>
 <body>
+    <!-- Баннер статуса сети -->
+    <div id="offline-banner" class="offline-banner online">
+        <div class="container status-container">
+            <span id="status-text">Проверка сети...</span>
+            <span id="last-update">Последнее обновление: —</span>
+        </div>
+    </div>
+
     <header class="header">
         <div class="container header_wrapper">
             <a href="index.html" class="logo">
@@ -379,6 +387,7 @@
     <script src="lib/style/core/app.js"></script>
     <script src="lib/style/core/calc.js"></script>
     <script src="lib/style/core/map.js"></script>
-    <script src="lib/style/core/signature.js"></script> <!-- Подключаем скрипт подписи -->
+    <script src="lib/style/core/signature.js"></script>
+    <script src="lib/style/core/offline.js"></script> <!-- Подключаем новый скрипт -->
 </body>
 </html>

@@ -1186,3 +1186,50 @@ body{
         height: 150px;
     }
 }
+
+/* ========================================================= */
+/* БАННЕР СТАТУСА СЕТИ                                       */
+/* ========================================================= */
+
+.offline-banner {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.offline-banner.online {
+    background-color: #d4edda; /* Светло-зеленый */
+    color: #155724;
+}
+
+.offline-banner.offline {
+    background-color: #f8d7da; /* Светло-красный */
+    color: #721c24;
+}
+
+.status-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#status-text {
+    font-weight: bold;
+}
+
+#last-update {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+@media screen and (max-width: 767px) {
+    .status-container {
+        flex-direction: column;
+        text-align: center;
+        justify-content: center;
+    }
+}
